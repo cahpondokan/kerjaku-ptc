@@ -1,0 +1,57 @@
+Generation method: built-in image_gen (imagegen skill).
+Purpose: UI recommendation only; no application implementation changes.
+Output: kerjaku-beranda-rekomendasi.jpg
+Conversion: generated PNG converted to JPEG, quality 95, without resizing.
+
+Use case: ui-mockup.
+Asset: high fidelity recommendation board for an Indonesian Android app home redesign, delivered as an image. Generate a beautiful polished, feasible mobile interface proposal for "KerjaKu", evolving an existing blue neumorphic app "Lembur". New scope combines existing overtime recording, hours conversion, PDF SPKL and Excel recaps with a new leave letter creator. This is a new design recommendation, not a screenshot.
+Composition: landscape board, approximately 2400x1600 high resolution, THREE equal-height portrait mobile artboards arranged side by side, each roughly 390x860 design units. Flat front-on UI panels only; no physical phones, no perspective, no camera holes, no operating-system status bars. Elegant spacious near-white background #F5F8FC, narrow page margins. Top board heading "KerjaKu" and subheading "Rekomendasi beranda • Lembur & surat cuti". Above each panel a small clear label, respectively "01  Data sudah lengkap", "02  Data belum lengkap", "03  Pengingat saat dibuka". Small footer outside panels: "Konsep tampilan • Data hanya contoh".
+Style: modern, calm and professional, warm approachable Indonesian work utility. Preserve the existing blue identity but refine it: background #E7F0FA, primary #2864DC, dark headings #17304F, secondary #60758D, white or very pale blue cards with understated neumorphic shadows and highlights, 20px card corners, 16px buttons. Use restrained blue gradients only for the primary top summary card. Amber #B76E16 on pale amber for required data warnings, muted green for confirmed profile. Rounded Material-style icons. Crisp Roboto/Inter typography, perfect Indonesian spelling, clear spacing, high text legibility. No invented corporate logos, no decorative illustrations, no charts. Bottom nav four items: "Beranda", "Riwayat", "Dokumen", "Profil"; Beranda highlighted blue. Profile nav in incomplete states has a small amber notification dot. Do not use online approval statuses or leave balances; this is an offline document creator.
+
+PANEL 1 READY HOME:
+Header with small blue rounded-square briefcase/check icon, brand text "KerjaKu", tiny subtitle "Lembur & surat cuti"; right circular "BP" avatar.
+Next "Halo, Budi" in bold and small secondary "Siap mencatat kegiatan hari ini?"
+Slim pale green verified chip reading "Profil & penandatangan lengkap".
+Primary blue summary card with white title "Lembur bulan ini", month "Oktober 2026" and three equal metrics: "8" with label "Kegiatan", "24" with label "Jam nyata", "44" with label "Konversi".
+Section heading "Layanan".
+Two equal white cards side by side: left blue clock icon, title "Lembur", subtitle "Catat jam dan hitung konversi", blue action "+ Catat lembur". Right blue document-calendar icon, title "Surat Cuti", subtitle "Susun surat sesuai formulir", blue action "+ Buat surat". Make buttons wrap naturally only if necessary, readable.
+Section "Rekap & dokumen". Raised full width card with three small equal icon tiles labeled "PDF SPKL", "Rekap Excel", "Surat cuti", all blue enabled; the row is obviously document creation/export access.
+Section row "Aktivitas terbaru" with small "Lihat semua" link.
+Two compact recent entries in one card: clock icon, "Lembur · 21 Okt 2026", smaller "16:00–19:00 · 3 jam"; document icon, "Surat cuti", smaller "Draf · Belum dibuat PDF" with small neutral pill "Draf". Keep data internally coherent; overtime monthly totals shown above are illustrative and may include other entries.
+Bottom nav with four items as specified. No warning anywhere in this ready state.
+
+PANEL 2 INCOMPLETE HOME:
+Same brand header, right generic user avatar with amber dot.
+Greeting "Selamat datang".
+Prominent pale amber bordered card:
+warning-circle icon, bold "Lengkapi data wajib".
+Small explanatory text "Data diperlukan untuk rekap dan surat cuti."
+Two separated checklist rows with outline-circle indicators:
+"Profil pekerja" with small right text "Belum lengkap";
+"Penandatangan" with small right text "Perlu diperiksa".
+Solid BLUE full-width CTA "Lengkapi sekarang".
+Below a shorter blue summary card "Lembur bulan ini" / "Oktober 2026", metrics "0" Kegiatan, "0" Jam nyata, "0" Konversi.
+Section "Layanan", two equal pale cards: clock icon "Lembur" with action "+ Catat lembur"; document-calendar icon "Surat Cuti" with action "+ Isi draf". Keep accessible for recording drafts, while actual document exports are gated.
+Section "Rekap & dokumen" with small lock icon.
+Disabled pale gray card with three subdued tiles "PDF SPKL", "Rekap Excel", "Surat cuti". Visible concise helper below: "Lengkapi profil dan konfirmasi penandatangan untuk membuat dokumen."
+Bottom nav identical with amber dot on Profil.
+Never display filled-out real employee data in this incomplete state.
+
+PANEL 3 STARTUP REMINDER:
+Same home as panel 2 visible beneath a translucent dark navy scrim. Center a LARGE rounded pale-white modal with generous padding and enough space for all text; keep background quiet and dim, readable primary popup.
+Top centered blue outlined profile/checklist icon in a soft blue circle.
+Bold heading on two lines "Lengkapi data terlebih dahulu".
+Secondary centered "Data ini dipakai pada rekap lembur dan surat cuti."
+Two left aligned checklist items with small blue icons:
+1 title "Profil pekerja"
+  description "Isi nama, nomor pekerja, dan data pekerjaan."
+2 title "Daftar penandatangan"
+  description "Periksa nama serta jabatan. Ubah jika belum sesuai."
+Small pale amber information strip with exact short wording:
+"Pengingat muncul setiap aplikasi dibuka sampai data wajib lengkap."
+Primary blue full-width button "Lengkapi sekarang".
+Secondary centered text button "Nanti".
+Last small muted line "Pembuatan dokumen tetap terkunci."
+The secondary button only dismisses reminder for the current session, no don't-show-again checkbox. Confirming signatory data is required even when default names exist. This interaction must be clear in the visual.
+
+Constraints: Balanced readable UI, enough height and whitespace, no overlaps, no clipped text, no excess tiny text. All three artboards equal size and align neatly. This is a proposal, not implemented software. Do not show Android package identifiers or engineering implementation details inside app UI. Don't invent the leave form itself; only the new entry point. Preserve all existing overtime functions through service cards and document area.

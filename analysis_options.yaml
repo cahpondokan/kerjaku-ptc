@@ -1,0 +1,13 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - 'output/**'
+    - '**/_backup_before_*/**'
+    - '**/backup_fix_*/**'
+    - '**/_lembur_backups/**'
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    use_super_parameters: true
