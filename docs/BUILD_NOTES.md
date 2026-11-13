@@ -1,4 +1,31 @@
-# Catatan Build KerjaKu PTC 1.8.0+16
+# Catatan Build KerjaKu PTC
+
+## Verifikasi 1.10.0+21 — 11 November 2026
+
+- Scan terpisah untuk SPPD, SPD, Deklarasi, dan Invoice, termasuk potong otomatis, koreksi sudut/putaran, pratinjau, penambahan, penggantian, penghapusan, serta pengurutan per halaman.
+- Berbagi WhatsApp tersedia mulai satu halaman dari jenis mana pun; kategori kosong dilewati. PDF dibangun ulang dari scan tersimpan terbaru. Argumen channel berbagi hanya berisi path PDF, tanpa penerima/admin dari Profil.
+- SQLite schema 5 menambah halaman scan; edit surat memakai UPDATE agar relasi tidak menghapus scan. Ekspor JSON versi 3 menyertakan gambar dan sumber sebelum potong manual; impor versi 1/2 mempertahankan scan yang tidak tercakup format lama.
+- `dart analyze --fatal-infos lib test`: tidak ada masalah. Seluruh **110 tes lulus**, termasuk 18 tes scan/database/UI baru. Cakupan mencakup paket parsial, urutan PDF, simpan/penggantian atomik, kegagalan refresh setelah commit, backup, gambar >3 MiB, layar 320 dp dengan teks 1,4, navigasi crop/review, dan alur share tanpa nomor tujuan.
+- PDF sintetis dari generator produksi dirender dengan Poppler: paket SPPD+SPD mempunyai tepat dua halaman sesuai urutan; invoice panjang tetap utuh dengan halaman lebih tinggi. Fixture warna digunakan untuk membedakan urutan, bukan data pengguna.
+- Build release universal berhasil (Gradle 90,5 detik). APK `output/apk/KerjaKu-PTC-1.10.0.apk`, **62.932.665 byte**. Package `com.niam.ayani.kerjakuptc`, versi `1.10.0`, kode `21`, label `KerjaKu PTC`, minimum SDK **23** sesuai manifest dependensi pemindai stabil.
+- APK terverifikasi dan sertifikat sama dengan versi 1.9.0: `610d957cdfb4ccb4b12535c8e8f3349fe57388e7a16c9baaa744cf042ec14ab9`. Konfigurasi signing pembaruan lokal proyek tetap sama.
+- SHA-256 APK: `e40f4abf9f7469434f14ad6f079bc954976cca2ba2aaf8801c11a2f83ae9f797`.
+- Log, metadata, dan render tersimpan di `output/verification/1.10.0/`. **Tidak dipasang ke HP**. Kamera ML Kit, crop native, dan pengiriman WhatsApp pada perangkat fisik belum diuji. Data HP dan kalibrasi tidak diakses atau diubah.
+- Panduan: [SCAN_BERKAS_DINAS.md](SCAN_BERKAS_DINAS.md). UI kamera memakai pemindai Android, yang perlu internet pada pemakaian pertama; desain awal telah diberi catatan revisi bahwa empat dokumen tidak harus lengkap.
+
+## Verifikasi 1.9.0+20 — 11 November 2026
+
+- Fitur Surat Dinas mencakup draf, formulir tiga langkah, daftar/detail, serta PDF A4 tegak dengan simpan/bagikan/cetak.
+- Bulan Romawi dan tahun mengikuti tanggal surat tersimpan; nomor urut kosong tampil `...`. Contoh: `No. ... /SPPD/ XI /2026-S8`.
+- `dart analyze --fatal-infos`: tidak ada masalah. `flutter test --no-pub`: seluruh **92 tes lulus**. Ekspektasi tes lama diperbarui mengikuti perilaku lembur otomatis/cuti versi 1.8.3; kode perhitungan lembur/cuti tetap sama.
+- SQL migrasi diuji pada SQLite dalam memori dengan data contoh: empat tabel lama beserta dasar upah lembur, surat cuti, saldo awal, dan default cuti tetap sama setelah tabel dinas ditambahkan.
+- Tiga PDF dari generator produksi diverifikasi sebagai satu halaman A4 tegak. Bulan XI, tahun 2026, nomor opsional/berisi, tanggal dan penandatangan diperiksa melalui ekstraksi teks. Contoh normal dan isian panjang dirender dengan Poppler dan diperiksa secara visual.
+- Build release berhasil (Gradle 181,3 detik). APK: `output/apk/KerjaKu-PTC-1.9.0.apk`, 29.504.141 byte. Package `com.niam.ayani.kerjakuptc`, versi `1.9.0`, kode `20`, label `KerjaKu PTC`.
+- Verifikasi APK berhasil; sertifikat sama dengan APK 1.8.3. Konfigurasi release tetap memakai signing debug proyek yang sama untuk pembaruan lokal.
+- SHA-256 APK: `dff8732bfde712c4334d117394327f7aade3bd28aa9d3dcc1a2922fe81b013e3`.
+- Log tersimpan di `output/verification/1.9.0/`. APK **belum dipasang ke HP**; penyimpanan PDF, panel berbagi, dan cetak belum diuji pada perangkat fisik. Data HP tidak diakses atau diubah.
+
+## Arsip verifikasi 1.8.0+16
 
 - Fitur ekspor/impor cadangan JSON mencakup lembur, cuti, saldo awal cuti, profil, gaji, dan pengaturan.
 - Build release berhasil: `output/apk/KerjaKu-PTC-1.8.0.apk` (29.219.978 byte).

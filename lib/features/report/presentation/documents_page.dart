@@ -22,13 +22,40 @@ class DocumentsPage extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 6),
-          const Text('Buat rekap lembur dan surat permohonan cuti.'),
+          const Text('Buat rekap lembur, surat cuti, dan surat dinas.'),
           const SizedBox(height: 22),
           if (!ready) ...[
             ProfileCompletionCard(onComplete: () => context.go('/settings')),
             const SizedBox(height: 20),
           ],
           const DocumentShortcuts(),
+          const SizedBox(height: 18),
+          NeumorphicCard(
+            onTap: () => context.push('/duty'),
+            child: const Row(
+              children: [
+                Icon(Icons.work_outline_rounded, color: AppColors.primary),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Surat Dinas',
+                        style: TextStyle(fontWeight: FontWeight.w800),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Buat, simpan, dan cetak permintaan perjalanan dinas',
+                        style: TextStyle(color: AppColors.textSecondary),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.chevron_right_rounded),
+              ],
+            ),
+          ),
           const SizedBox(height: 20),
           const NeumorphicCard(
             child: Column(

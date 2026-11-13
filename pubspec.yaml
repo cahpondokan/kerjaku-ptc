@@ -1,7 +1,7 @@
 name: lembur
 description: KerjaKu PTC, aplikasi offline untuk pencatatan lembur dan administrasi pekerja PTC.
 publish_to: 'none'
-version: 1.8.3+19
+version: 1.10.0+21
 
 environment:
   sdk: '>=3.7.0 <4.0.0'
@@ -24,6 +24,7 @@ dependencies:
   share_plus: 11.1.0
 
 dev_dependencies:
+  sqflite_common_ffi: 2.3.6
   flutter_test:
     sdk: flutter
   flutter_lints: 5.0.0

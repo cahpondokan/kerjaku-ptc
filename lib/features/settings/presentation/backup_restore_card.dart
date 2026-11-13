@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lembur/core/widgets/neumorphic_card.dart';
+import 'package:lembur/features/duty/presentation/duty_provider.dart';
 import 'package:lembur/features/leave/presentation/leave_provider.dart';
 import 'package:lembur/features/overtime/presentation/overtime_provider.dart';
 import 'package:lembur/features/settings/data/backup_restore_service.dart';
@@ -51,9 +52,13 @@ class _BackupRestoreCardState extends State<BackupRestoreCard> {
               title: const Text('Pulihkan cadangan?'),
               content: Text(
                 'Berkas berisi ${summary.overtimeCount} catatan lembur dan '
-                '${summary.leaveCount} surat cuti. Catatan dan saldo di '
-                'perangkat ini akan diganti. Pengaturan yang tidak ada dalam '
-                'berkas akan tetap dipertahankan.',
+                '${summary.leaveCount} surat cuti'
+                '${summary.includesDuty ? ', serta ${summary.dutyCount} surat dinas' : ''}'
+                '${summary.includesScans ? ' dan ${summary.scanPageCount} halaman scan' : ''}. '
+                'Catatan yang tercakup dalam cadangan dan saldo akan diganti. '
+                '${summary.includesDuty ? '' : 'Surat dinas di perangkat ini tetap dipertahankan. '}'
+                '${summary.includesScans ? '' : 'Hasil scan beserta surat terkait yang sudah ada tetap dipertahankan. '}'
+                'Pengaturan yang tidak ada dalam berkas tetap dipertahankan.',
               ),
               actions: [
                 TextButton(
@@ -73,11 +78,19 @@ class _BackupRestoreCardState extends State<BackupRestoreCard> {
       final settings = context.read<SettingsProvider>();
       final overtime = context.read<OvertimeProvider>();
       final leave = context.read<LeaveProvider>();
+      final duty = context.read<DutyProvider>();
       final restored = await _service.restoreBackup(bytes);
-      await Future.wait([settings.load(), overtime.load(), leave.load()]);
+      await Future.wait([
+        settings.load(),
+        overtime.load(),
+        leave.load(),
+        duty.load(),
+      ]);
       _showMessage(
         'Pemulihan selesai: ${restored.overtimeCount} lembur dan '
-        '${restored.leaveCount} surat cuti.',
+        '${restored.leaveCount} surat cuti'
+        '${restored.includesDuty ? ', ${restored.dutyCount} surat dinas' : ''}'
+        '${restored.includesScans ? ', ${restored.scanPageCount} halaman scan' : ''}.',
       );
     } catch (error) {
       _showMessage('Impor gagal: $error');
@@ -113,7 +126,7 @@ class _BackupRestoreCardState extends State<BackupRestoreCard> {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Cadangan mencakup catatan lembur, surat cuti, profil, dan pengaturan. '
+            'Cadangan mencakup catatan lembur, surat cuti, surat dinas, seluruh gambar scan, profil, dan pengaturan. '
             'Simpan berkas JSON di tempat yang aman.',
           ),
           const SizedBox(height: 14),

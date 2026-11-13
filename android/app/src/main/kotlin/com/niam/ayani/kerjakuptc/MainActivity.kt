@@ -12,6 +12,7 @@ import io.flutter.plugin.common.MethodChannel
 import java.io.File
 
 class MainActivity : FlutterActivity() {
+    private var dutyScanner: DutyScannerBridge? = null
     private val channelName = "com.niam.ayani.kerjakuptc/whatsapp"
     private val backupChannelName = "com.niam.ayani.kerjakuptc/backup"
     private val backupPickRequestCode = 1201
@@ -21,6 +22,7 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        dutyScanner = DutyScannerBridge(this, flutterEngine.dartExecutor.binaryMessenger)
 
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
@@ -92,7 +94,7 @@ class MainActivity : FlutterActivity() {
                         )
                     }
                 }
-                "saveBackup" -> {
+                "saveBackup", "savePdf" -> {
                     val bytes = call.argument<ByteArray>("bytes")
                     if (bytes == null) {
                         result.error("BACKUP_EMPTY", "Berkas cadangan kosong.", null)
@@ -105,7 +107,7 @@ class MainActivity : FlutterActivity() {
                     try {
                         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                             addCategory(Intent.CATEGORY_OPENABLE)
-                            type = "application/json"
+                            type = if (call.method == "savePdf") "application/pdf" else "application/json"
                             putExtra(Intent.EXTRA_TITLE, fileName)
                         }
                         startActivityForResult(intent, backupSaveRequestCode)
@@ -127,6 +129,7 @@ class MainActivity : FlutterActivity() {
     @Deprecated("Deprecated in Android, retained for Flutter activity result handling")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (dutyScanner?.onActivityResult(requestCode, resultCode, data) == true) return
         if (requestCode != backupPickRequestCode &&
             requestCode != backupSaveRequestCode
         ) return
@@ -251,5 +254,10 @@ class MainActivity : FlutterActivity() {
         } catch (error: PackageManager.NameNotFoundException) {
             false
         }
+    }
+
+    override fun onDestroy() {
+        dutyScanner?.dispose()
+        super.onDestroy()
     }
 }

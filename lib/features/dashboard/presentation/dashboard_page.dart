@@ -59,7 +59,7 @@ class DashboardPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Lembur & surat cuti',
+                        'Lembur, cuti & dinas',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -159,6 +159,58 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 22),
+            Container(
+              margin: const EdgeInsets.only(bottom: 22),
+              child: NeumorphicCard(
+                onTap: () => context.push('/duty'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Color(0xFFD9E9FF),
+                          child: Icon(
+                            Icons.work_outline_rounded,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Surat Dinas',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Buat permintaan perjalanan dinas',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(Icons.chevron_right_rounded),
+                      ],
+                    ),
+                    const SizedBox(height: 14),
+                    FilledButton.icon(
+                      onPressed: () => context.push('/duty'),
+                      icon: const Icon(Icons.work_outline_rounded),
+                      label: const Text('Buka Surat Dinas'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(

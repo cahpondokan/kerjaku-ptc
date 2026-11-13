@@ -1,15 +1,17 @@
 # KerjaKu PTC
 
-Aplikasi Android offline untuk pencatatan lembur pekerja PTC/TAD, perhitungan jam dan estimasi upah lembur, pembuatan PDF SPKL, rekap Excel bulanan, serta surat permohonan cuti dengan saldo tahunan otomatis.
+Aplikasi Android offline untuk pencatatan lembur pekerja PTC/TAD, perhitungan jam dan estimasi upah lembur, pembuatan PDF SPKL, rekap Excel bulanan, surat permohonan cuti dengan saldo tahunan otomatis, serta surat permintaan perjalanan dinas (SPPD).
+
+Kode terbaru berada di cabang `main`. APK versi 1.10.0 tersedia pada [rilis GitHub](https://github.com/cahpondokan/kerjaku-ptc/releases/tag/v1.10.0). Panduan mengambil proyek, menjalankan tes, dan melanjutkan pengembangan tersedia di [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## Identitas Project
 
 - Nama aplikasi: **KerjaKu PTC**
 - Project Flutter: `lembur`
 - Package Android: `com.niam.ayani.kerjakuptc`
-- Platform: Android
-- Sistem: offline
-- Versi paket: `1.8.3+19`
+- Platform: Android 6.0 atau lebih baru
+- Sistem: data lokal/offline; internet untuk penyiapan pemindai pertama dan pengiriman WhatsApp
+- Versi paket: `1.10.0+21`
 - Kompatibilitas Dart: `>=3.7.0 <4.0.0`
 
 ## Fitur
@@ -24,12 +26,19 @@ Aplikasi Android offline untuk pencatatan lembur pekerja PTC/TAD, perhitungan ja
 - Semua delapan kolom profil wajib lengkap sebelum membuat dokumen.
 - Nama dan jabatan penandatangan PTC/AFT wajib diperiksa dan dikonfirmasi. Perubahan daftar membatalkan konfirmasi sebelumnya.
 - Minimal satu nama dan satu jabatan AFT; slot tidak terpakai boleh kosong. Nama contoh tidak dapat digunakan untuk ekspor.
-- PDF, Excel, dan seluruh jalur berbagi dokumen terkunci sampai profil lengkap dan penandatangan dikonfirmasi.
+- Pembuatan PDF formulir dan Excel terkunci sampai profil lengkap dan penandatangan dikonfirmasi. Berbagi scan dokumen yang sudah tersimpan tidak meminta data profil atau kontak admin.
 - Surat cuti PDF A4 mendatar dengan susunan formulir PTC, logo, dan ruang tanda tangan.
 - Hak cuti 12 hari per tahun, perhitungan hari kerja dan tanggal masuk kembali otomatis.
 - Saldo cuti awal, riwayat, ubah/hapus surat, pratinjau, cetak, dan bagikan PDF.
+- Surat dinas: formulir tiga langkah, simpan/lanjutkan draf, riwayat, pencarian, filter tahun/status, ubah dan hapus.
+- PDF SPPD satu halaman A4 tegak mengikuti contoh surat, dengan logo hitam dan ruang tanda tangan.
+- Bulan Romawi dan tahun nomor SPPD mengikuti tanggal surat tersimpan. Nomor urut opsional; kosong dicetak `...` untuk pengisian dengan pena.
+- Identitas awal dari Profil; penandatangan dipilih dari daftar nama/jabatan AFT yang sudah tersedia.
+- Simpan PDF ke lokasi pilihan Android, bagikan, atau cetak dari pratinjau.
+- Scan berkas dinas per jenis: SPPD, SPD, Deklarasi, Invoice; potong otomatis, koreksi sudut/putaran, ganti/hapus/urutkan per halaman.
+- Bagikan bertahap lewat WhatsApp mulai dari satu halaman. PDF baru dibuat dari scan terbaru dengan urutan jenis tetap; penerima dipilih sendiri.
 - Database SQLite offline.
-- Ekspor/impor cadangan JSON yang mencakup data lembur, cuti, profil, dan pengaturan.
+- Ekspor/impor cadangan JSON yang mencakup data lembur, cuti, dinas, hasil scan, profil, dan pengaturan.
 - Tambah, edit, dan hapus data lembur.
 - Perhitungan jam nyata dan jam konversi otomatis.
 - Profil dan data pekerjaan tetap.
@@ -59,9 +68,29 @@ Aplikasi Android offline untuk pencatatan lembur pekerja PTC/TAD, perhitungan ja
 
 1. Pada KerjaKu PTC yang masih menyimpan data lama, buka **Profil → Data & Keamanan → Ekspor**. Bagikan atau simpan berkas `KerjaKu_PTC_backup_*.json`.
 2. Buka KerjaKu PTC pada perangkat/instalasi tujuan, pilih **Impor**, lalu pilih berkas cadangan JSON.
-3. Periksa jumlah lembur dan surat cuti pada konfirmasi, lalu pilih **Pulihkan**. Pemulihan mengganti seluruh data serta pengaturan yang ada di instalasi tujuan.
+3. Periksa jumlah lembur, surat cuti, dan surat dinas pada konfirmasi, lalu pilih **Pulihkan**. Data yang tercakup dalam berkas menggantikan data di instalasi tujuan; pengaturan yang tidak ada dalam berkas dipertahankan.
 
-Ekspor dan impor mencakup catatan lembur, surat cuti, saldo awal cuti, profil, gaji, daftar penandatangan, dan pengaturan. Jika aplikasi lama belum memiliki tombol ekspor, perbarui KerjaKu PTC di perangkat lama ke versi yang mendukung cadangan, ekspor dari sana, lalu impor berkasnya di instalasi tujuan. Berkas cadangan memuat data pribadi; simpan dan bagikan hanya melalui tempat tepercaya.
+Ekspor dan impor mencakup catatan lembur, surat cuti, saldo awal cuti, surat dinas beserta draf, hasil scan per dokumen, profil, gaji, daftar penandatangan, dan pengaturan. Cadangan format lama tetap dapat diimpor: surat dinas dan scan yang belum dicakup format lama dipertahankan. Cadangan format 3 yang menyertakan gambar memerlukan aplikasi versi 1.10.0 atau lebih baru. Jika aplikasi lama belum memiliki tombol ekspor, perbarui KerjaKu PTC di perangkat lama ke versi yang mendukung cadangan, ekspor dari sana, lalu impor berkasnya di instalasi tujuan. Berkas cadangan memuat data pribadi; simpan dan bagikan hanya melalui tempat tepercaya.
+
+## Membuat Surat Dinas
+
+1. Buka **Beranda → Surat Dinas → Buat surat dinas** (juga tersedia dari Dokumen).
+2. Periksa identitas pekerja dan penerima. Nomor urut boleh dikosongkan atau diisi, termasuk angka nol di depan.
+3. Isi asal, tujuan, tanggal mulai/kembali, keperluan, kendaraan, dan penanggung biaya.
+4. Pilih tempat/tanggal surat serta penandatangan dari Profil. Bulan dan tahun nomor surat berubah mengikuti **tanggal surat**, bukan tanggal perjalanan.
+5. Centang pemeriksaan data, simpan, kemudian simpan PDF, bagikan, atau cetak. Gunakan **Simpan draf** bila pengisian belum selesai.
+
+Contoh tanggal surat 2 November 2026: `No. ... /SPPD/ XI /2026-S8`. Jika nomor diisi `0012`: `No. 0012 /SPPD/ XI /2026-S8`. Surat yang dibuka kembali mempertahankan tanggal, nomor, identitas, dan penandatangan saat disimpan. Status **Tersimpan** berarti data tersimpan di perangkat.
+
+Spesifikasi dan catatan teknis: [docs/SURAT_DINAS.md](docs/SURAT_DINAS.md).
+
+## Berkas Setelah Dinas
+
+Buka surat tersimpan lalu **Kelola berkas dinas**. Scan dan simpan SPPD yang ditandatangani, SPD, Deklarasi, dan Invoice pada jenis masing-masing. Tiap halaman dapat dipotong ulang, diganti, dihapus, atau diurutkan sendiri.
+
+**Bagikan via WhatsApp** aktif sejak tersedia satu halaman. Misalnya hanya SPPD dan SPD, keduanya langsung digabung; kategori yang belum ada dilewati. Pengiriman berikutnya memakai seluruh scan terbaru dengan urutan SPPD → SPD → Deklarasi → Invoice. Anda memilih kontak/grup penerima sendiri. Scan sumber tetap terpisah dan ikut dalam ekspor cadangan.
+
+Pemindai Android menyiapkan komponennya melalui internet pada pemakaian pertama. Panduan, persyaratan perangkat, dan batas pengujian ada di [docs/SCAN_BERKAS_DINAS.md](docs/SCAN_BERKAS_DINAS.md).
 
 Perhitungan saat ini untuk gaji bulanan dan pola **5 hari kerja / 40 jam per minggu**, mengikuti pola konversi yang sudah digunakan aplikasi. Rumus, contoh, dan batas cakupan ada di [docs/OVERTIME_PAY.md](docs/OVERTIME_PAY.md). Gaji tidak wajib untuk membuat surat cuti atau dokumen SPKL. Estimasi upah ditampilkan di aplikasi; template PDF SPKL dan Excel resmi tetap menggunakan kolom yang ada.
 

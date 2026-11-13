@@ -35,6 +35,14 @@ migrate_working_dir/
 /output/
 /tmp/
 
+# Local design references include personal document examples.
+/docs/design/pengajuan-dinas-v1/
+/docs/design/pengajuan-dinas-v1.zip
+/docs/design/pengajuan-dinas-v2/
+/docs/design/pengajuan-dinas-v2.zip
+/docs/design/scan-berkas-dinas-v1/
+/docs/design/scan-berkas-dinas-v1.zip
+
 # Local machine configuration, generated Android logs, and signing credentials
 /android/local.properties
 /android/*.log

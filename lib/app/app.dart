@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lembur/features/duty/data/duty_repository.dart';
+import 'package:lembur/features/duty/presentation/duty_provider.dart';
 import 'package:lembur/features/leave/data/leave_repository.dart';
 import 'package:lembur/features/leave/presentation/leave_provider.dart';
 import 'package:lembur/app/router/app_router.dart';
@@ -18,6 +20,9 @@ class KerjaKuBootstrap extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SettingsProvider()..load()),
+        ChangeNotifierProvider(
+          create: (_) => DutyProvider(DutyRepository())..load(),
+        ),
         ChangeNotifierProvider(
           create: (_) => LeaveProvider(LeaveRepository())..load(),
         ),

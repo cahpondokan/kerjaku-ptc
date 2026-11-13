@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lembur/features/duty/presentation/duty_packet_page.dart';
+import 'package:lembur/features/duty/presentation/duty_page.dart';
+import 'package:lembur/features/duty/presentation/duty_form_page.dart';
+import 'package:lembur/features/duty/presentation/duty_detail_page.dart';
+import 'package:lembur/features/duty/presentation/duty_preview_page.dart';
 import 'package:lembur/features/leave/presentation/leave_page.dart';
 import 'package:lembur/features/leave/presentation/leave_form_page.dart';
 import 'package:lembur/features/leave/presentation/leave_preview_page.dart';
@@ -59,6 +64,28 @@ final GoRouter appRouter = GoRouter(
           ),
     ),
     GoRoute(path: '/leave', builder: (context, state) => const LeavePage()),
+    GoRoute(path: '/duty', builder: (context, state) => const DutyPage()),
+    GoRoute(
+      path: '/duty/packet/:id',
+      builder:
+          (context, state) => DutyPacketPage(id: state.pathParameters['id']!),
+    ),
+    GoRoute(
+      path: '/duty/form',
+      builder:
+          (context, state) =>
+              DutyFormPage(editId: state.uri.queryParameters['editId']),
+    ),
+    GoRoute(
+      path: '/duty/detail/:id',
+      builder:
+          (context, state) => DutyDetailPage(id: state.pathParameters['id']!),
+    ),
+    GoRoute(
+      path: '/duty/preview/:id',
+      builder:
+          (context, state) => DutyPreviewPage(id: state.pathParameters['id']!),
+    ),
     GoRoute(
       path: '/leave/form',
       builder:

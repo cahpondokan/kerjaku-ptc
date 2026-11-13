@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.10.0+21 — Scan dan kirim berkas dinas bertahap
+
+- Scan terpisah untuk SPPD, SPD, Deklarasi, dan Invoice, dengan potong otomatis melalui pemindai Android, pratinjau, koreksi empat sudut dan putaran.
+- Tambah banyak halaman, urutkan, potong ulang, ganti, atau hapus hanya halaman yang dipilih. Halaman lama bertahan sampai pengganti berhasil disimpan.
+- Bagikan lewat WhatsApp sejak tersedia satu halaman. Dokumen kosong dilewati; urutan PDF tetap SPPD → SPD → Deklarasi → Invoice. Penerima dipilih sendiri tanpa nomor admin Profil.
+- PDF dibuat ulang dari scan terbaru setiap kali dibagikan; struk panjang dipertahankan utuh pada halaman yang lebih tinggi.
+- SQLite schema 5 menyimpan scan terpisah; pembacaan gambar besar menggunakan potongan kecil. Edit surat tidak menghapus scan.
+- Cadangan JSON versi 3 menyertakan gambar. Cadangan lama versi 1/2 tetap diterima tanpa menghapus scan yang tidak tercakup olehnya.
+- Tempat/tanggal surat, data kalibrasi upah, lembur, dan cuti tetap dipertahankan. Minimal Android 6.0 mengikuti dependensi pemindai stabil; pemakaian pertama membutuhkan internet dan Google Play services.
+
+## 1.9.0+20 — Surat dinas
+
+- Menambahkan layanan Surat Dinas pada Beranda dan Dokumen: daftar, draf, formulir tiga langkah, detail, serta pratinjau PDF.
+- Nomor SPPD memakai bulan Romawi dan tahun dari tanggal surat. Nomor urut opsional; isian kosong tampil sebagai tiga titik (`...`).
+- Identitas awal dari Profil dan pilihan penandatangan dari daftar yang sudah tersimpan. Setiap surat menyimpan salinan data agar tetap sama saat dibuka kembali.
+- PDF A4 tegak mengikuti susunan contoh, dengan logo hitam, nama/jabatan, dan ruang tanda tangan; mendukung simpan, bagikan, dan cetak.
+- Database versi 4 menambah tabel dinas tanpa menghapus tabel lembur/cuti. Cadangan JSON versi 2 menyertakan surat dinas; impor cadangan lama mempertahankan surat dinas yang sudah ada.
+- Paket dan sertifikat pembaruan tetap menggunakan konfigurasi proyek. Belum dipasang pada HP pengguna.
+
 ## 1.8.3+19 — Riwayat cuti lebih jelas
 
 - Surat cuti dibaca kembali dari database setelah disimpan untuk memastikan masuk ke riwayat.

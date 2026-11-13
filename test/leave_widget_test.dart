@@ -203,7 +203,7 @@ void main() {
     await tester.tap(find.text('Simpan'));
     await tester.pumpAndSettle();
     expect(leave.remaining(2026), 6);
-    expect(find.textContaining('Tersimpan. Otomatis'), findsOneWidget);
+    expect(find.textContaining('Tersimpan dan otomatis'), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
     leave = LeaveProvider(repository);
     await leave.load();
@@ -216,7 +216,7 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(
-      find.text('4 hari sudah diambil sebelum memakai aplikasi.'),
+      find.text('4 hari cuti dipakai sebelum menggunakan aplikasi.'),
       findsOneWidget,
     );
     await tester.tap(find.byKey(const ValueKey('initial-leave-edit')));

@@ -21,7 +21,7 @@ android {
     defaultConfig {
         manifestPlaceholders["applicationLabel"] = "KerjaKu PTC"
         applicationId = "com.niam.ayani.kerjakuptc"
-        minSdk = flutter.minSdkVersion
+        minSdk = 23 // Required by the stable ML Kit document scanner.
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -36,4 +36,8 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation("com.google.android.gms:play-services-mlkit-document-scanner:16.0.0")
 }

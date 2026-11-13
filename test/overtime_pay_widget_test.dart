@@ -187,7 +187,7 @@ void main() {
     'new',
     'existing',
     'legacy',
-    'legacy-profile',
+    'existing-profile',
     'legacy-manual',
   ]) {
     testWidgets('Form saves correct wage basis for $scenario', (tester) async {
@@ -195,7 +195,7 @@ void main() {
       final settings = await readySettings();
       await settings.saveSalary(const OvertimeSalary(basic: 6920000));
       final seed =
-          scenario == 'existing'
+          scenario == 'existing' || scenario == 'existing-profile'
               ? sampleEntry().copyWith(monthlyWageBasisCents: 519000000)
               : sampleEntry();
       final repo = MemoryOvertimeRepository(scenario == 'new' ? [] : [seed]);
@@ -237,7 +237,7 @@ void main() {
         );
         await tester.testTextInput.receiveAction(TextInputAction.done);
       }
-      if (scenario == 'legacy-profile') {
+      if (scenario == 'existing-profile') {
         await scrollTo(tester, find.byKey(const ValueKey('use-profile-wage')));
         await tester.tap(find.byKey(const ValueKey('use-profile-wage')));
         await tester.pumpAndSettle();
@@ -259,7 +259,7 @@ void main() {
       expect(find.text('Tersimpan'), findsOneWidget);
       expect(repo.entries, hasLength(1));
       final expectedBasis = switch (scenario) {
-        'new' || 'legacy-profile' => 692000000,
+        'new' || 'legacy' || 'existing-profile' => 692000000,
         'existing' || 'legacy-manual' => 519000000,
         _ => null,
       };
@@ -277,34 +277,35 @@ void main() {
     });
   }
 
-  testWidgets('Summary labels partial totals and persists hidden amounts', (
-    tester,
-  ) async {
-    final settings = await readySettings();
-    await settings.saveSalary(const OvertimeSalary(basic: 5190000));
-    final overtime = OvertimeProvider(MemoryOvertimeRepository());
-    final paid = sampleEntry().copyWith(monthlyWageBasisCents: 519000000);
-    await tester.pumpWidget(
-      testPage(
-        settings: settings,
-        overtime: overtime,
-        child: OvertimePaySummary(
-          entries: [paid, paid.copyWith(id: 'second'), sampleEntry()],
+  testWidgets(
+    'Summary automatically includes legacy wages and persists hidden amounts',
+    (tester) async {
+      final settings = await readySettings();
+      await settings.saveSalary(const OvertimeSalary(basic: 5190000));
+      final overtime = OvertimeProvider(MemoryOvertimeRepository());
+      final paid = sampleEntry().copyWith(monthlyWageBasisCents: 519000000);
+      await tester.pumpWidget(
+        testPage(
+          settings: settings,
+          overtime: overtime,
+          child: OvertimePaySummary(
+            entries: [paid, paid.copyWith(id: 'second'), sampleEntry()],
+          ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('Subtotal upah lembur'), findsOneWidget);
-    expect(find.text(OvertimePayCalculator.rupiah(330000)), findsOneWidget);
-    expect(find.textContaining('1 catatan belum dihitung'), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('toggle-pay-visibility')));
-    await tester.pumpAndSettle();
-    expect(find.text('••••••'), findsOneWidget);
-    expect(find.text(OvertimePayCalculator.rupiah(330000)), findsNothing);
-    final reopened = SettingsProvider();
-    await reopened.load();
-    expect(reopened.hidePay, isTrue);
-  });
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Estimasi upah lembur'), findsOneWidget);
+      expect(find.text(OvertimePayCalculator.rupiah(495000)), findsOneWidget);
+      expect(find.textContaining('catatan belum dihitung'), findsNothing);
+      await tester.tap(find.byKey(const ValueKey('toggle-pay-visibility')));
+      await tester.pumpAndSettle();
+      expect(find.text('••••••'), findsOneWidget);
+      expect(find.text(OvertimePayCalculator.rupiah(495000)), findsNothing);
+      final reopened = SettingsProvider();
+      await reopened.load();
+      expect(reopened.hidePay, isTrue);
+    },
+  );
 
   testWidgets(
     'Legacy-only, loading and failure summaries do not claim a zero total',

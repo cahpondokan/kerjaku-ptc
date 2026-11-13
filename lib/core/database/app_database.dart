@@ -15,7 +15,8 @@ class AppDatabase {
     final path = join(databasePath, 'lembur_ptc.db');
     _database = await openDatabase(
       path,
-      version: 3,
+      version: 5,
+      onConfigure: (db) => db.execute('PRAGMA foreign_keys = ON'),
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE overtime_entries(
@@ -35,10 +36,14 @@ class AppDatabase {
           )
         ''');
         await createLeaveTables(db);
+        await createDutyTable(db);
+        await createDutyScanTable(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) await createLeaveTables(db);
         if (oldVersion < 3) await addOvertimeWageColumn(db);
+        if (oldVersion < 4) await createDutyTable(db);
+        if (oldVersion < 5) await createDutyScanTable(db);
       },
     );
     return _database!;
@@ -48,6 +53,52 @@ class AppDatabase {
     await db.execute(
       'ALTER TABLE overtime_entries ADD COLUMN monthly_wage_basis_cents INTEGER',
     );
+  }
+
+  static Future<void> createDutyScanTable(DatabaseExecutor db) async {
+    await db.execute('''
+      CREATE TABLE duty_scan_pages(
+        id TEXT PRIMARY KEY,
+        duty_id TEXT NOT NULL REFERENCES duty_entries(id) ON DELETE CASCADE,
+        kind TEXT NOT NULL CHECK(kind IN ('sppd','spd','declaration','invoice')),
+        position INTEGER NOT NULL CHECK(position >= 0),
+        image BLOB NOT NULL,
+        original_image BLOB,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      )
+    ''');
+    await db.execute(
+      'CREATE INDEX duty_scan_order ON duty_scan_pages(duty_id, kind, position)',
+    );
+  }
+
+  static Future<void> createDutyTable(DatabaseExecutor db) async {
+    await db.execute('''
+      CREATE TABLE duty_entries(
+        id TEXT PRIMARY KEY,
+        serial TEXT NOT NULL,
+        recipient TEXT NOT NULL,
+        applicant_name TEXT NOT NULL,
+        worker_number TEXT NOT NULL,
+        placement TEXT NOT NULL,
+        job_type TEXT NOT NULL,
+        origin TEXT NOT NULL,
+        destination TEXT NOT NULL,
+        start_date TEXT,
+        return_date TEXT,
+        request_date TEXT NOT NULL,
+        purpose TEXT NOT NULL,
+        transport TEXT NOT NULL,
+        cost_bearer TEXT NOT NULL,
+        request_place TEXT NOT NULL,
+        signer_name TEXT NOT NULL,
+        signer_position TEXT NOT NULL,
+        is_draft INTEGER NOT NULL CHECK(is_draft IN (0, 1)),
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      )
+    ''');
   }
 
   static Future<void> createLeaveTables(DatabaseExecutor db) async {
